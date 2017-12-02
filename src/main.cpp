@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
     // cout << "Day 1 Part 2 " << day1p2(input[0][0].c_str()) << endl;
 
     cout << "Day 2 Part 1: " << day2p1(input) << endl;
+    cout << "Day 2 Part 2: " << day2p2(input) << endl;
 
     return 0;
 }
