@@ -7,6 +7,7 @@
 constexpr long day1p1(const char input[], const size_t &index=0);
 constexpr long day1p2(const char input[], const size_t &index=0);
 long day2p1(std::vector<std::vector<int>>);
+long day2p2(std::vector<std::vector<int>>);
 
 
 constexpr long day1p1(const char input[], const size_t &index)
