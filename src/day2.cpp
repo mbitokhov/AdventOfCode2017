@@ -3,7 +3,7 @@
 #include <algorithm>
 #include "includes/adventofcode.hpp"
 
-long day2p1(std::vector<std::vector<int>> input)
+long day2p1(const std::vector<std::vector<int>> &input)
 {
     long running_sum{0};
     for(const auto &vec:input)
@@ -13,7 +13,7 @@ long day2p1(std::vector<std::vector<int>> input)
     }
     return running_sum;
 }
-long day2p2(std::vector<std::vector<int>> input)
+long day2p2(const std::vector<std::vector<int>> &input)
 {
     long running_sum{0};
     for(const auto &vec:input)
