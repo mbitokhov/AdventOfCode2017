@@ -5,6 +5,8 @@
 #include <sstream>
 #include <string>
 
+uint64_t integral_hash(uint64_t);
+
 template <typename dtype>
 std::vector<std::vector<dtype>> vectorize(std::istream &input)
 {
