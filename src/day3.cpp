@@ -42,85 +42,178 @@ long day3p2(const long& input)
     typedef std::tuple<int, int> Coordinate;
 
     auto tuple_hash = [](Coordinate value){
-        auto hashed_1 = integral_hash(std::get<0>(value));
-        auto hashed_2 = integral_hash(std::get<1>(value));
+        auto hashed = integral_hash(std::get<0>(value));
+        hashed = integral_hash(hashed ^ std::get<1>(value));
 
-        //Can't just add them because that leads to -1,3 = 3,-1
-        auto hashed = hashed_1 << 32;
-        hashed ^= hashed_2 >> 32;
         return hashed;
     };
 
     std::unordered_map<Coordinate, long, decltype(tuple_hash)> grid(128,tuple_hash);
     grid[{0,0}] = 1;
 
-    auto sum_nearby_elements = [grid](int x, int y)
+    auto sum_nearby_elements = [&grid](Coordinate position)
     {
+        if(grid[position] != 0)
+        {
+            std::cout << "redoing the same coordinate "
+                      << "x: " << std::get<0>(position)
+                      << "y: " << std::get<1>(position)
+                      << std::endl;
+
+        }
+
+        int x = std::get<0> (position);
+        int y = std::get<1> (position);
         long sum = 0;
         for(int i=-1; i<=1; i++)
         {
             for(int j=-1; j<=1; j++)
             {
-                auto found = grid.find({x+i, y+j});
-                if(found != grid.end())
-                {
-                    sum += found->second;
-                }
+                long found = grid[{x+i, y+j}];
+                // std::cout << "element: "
+                //           << "i: " << i << " "
+                //           << "j: " << j << " "
+                //           << "found: " << found << " "
+                //           << std::endl;
+                sum += found;
             }
         }
+        // std::cout << "x: " << x << " "
+        //           << "y: " << y << " "
+        //           << "sum: " << sum << " "
+        //           << std::endl;
+        grid[position] = sum;
         return sum;
     };
 
-    int x = 0;
-    int y = 0;
-    int radius = 1;
-    int corner;
+    Coordinate position{1,0};
+    //bool on_x{false};
+
+    ////Value is just a pair where the second element is the value to add to
+    ////the position depending on on_x
+    //Coordinate value{-1,1};
+    int corner = 1;
     while (true)
     {
-        x += 1;
-        corner = y+radius;
-        for(;y<=corner; y++)
+        //I had to unroll the loop manually because the logic became tricky to
+        //implement efficiently. I worried that gcc and clang would not be able
+        //to unroll it itself
+
+        //The logic goes as follows
+        //  while position is not on the corner
+        //    sum up the values around it
+        //    move the position toward the corner
+        //  move the position closer to the next corner
+
+        //Everything is just copy pasted
+
+        // y++
+        while(std::get<1>(position) <= corner)
         {
-            long sum = sum_nearby_elements(x,y);
+            auto sum = sum_nearby_elements(position);
             if(sum > input)
             {
                 return sum;
             }
-            grid[{x,y}] = sum;
+            std::get<1>(position)++;
         }
-        y--;
-        corner = 2*radius + 1;
-        for(;x>=corner; x--)
+        std::get<1>(position)--;
+
+        // x--
+        std::get<0>(position)--;
+        while(std::get<0>(position) >= -corner)
         {
-            long sum = sum_nearby_elements(x,y);
+            auto sum = sum_nearby_elements(position);
             if(sum > input)
             {
                 return sum;
             }
-            grid[{x,y}] = sum;
+            std::get<0>(position)--;
         }
-        x++;
-        for(;y>=corner; y--)
+        std::get<0>(position)++;
+
+        // y--
+        std::get<1>(position)--;
+        while(std::get<1>(position) >= -corner)
         {
-            long sum = sum_nearby_elements(x,y);
+            auto sum = sum_nearby_elements(position);
             if(sum > input)
             {
                 return sum;
             }
-            grid[{x,y}] = sum;
+            std::get<1>(position)--;
         }
-        y++;
-        corner *= -1;
-        for(;x>=corner; x++)
+        std::get<1>(position)++;
+
+        // x++
+        std::get<0>(position)++;
+        while(std::get<0>(position) <= corner)
         {
-            long sum = sum_nearby_elements(x,y);
+            auto sum = sum_nearby_elements(position);
             if(sum > input)
             {
                 return sum;
             }
-            grid[{x,y}] = sum;
+            std::get<0>(position)++;
         }
-        x--;
-        radius += 1;
+        std::get<0>(position)--;
+
+        //This is my other implementation that involved looping it based off of
+        //logic
+
+        //It didn't work entirely, but the issue is fixed easily. The
+        //implementation goes
+
+        //  for each side:
+        //    sum nearby elements
+        //    if a side that's on x, move x closer to the corner
+        //    else move y closer to the corner
+        //    if we're currently on the corner, break
+        //
+        //  swap the x,y incrememnt/decrement value and multiple the new x by -1
+        //  flip on_x
+
+        //Doing this, there's just one central piece of code, but might lead
+        //to poorer performance
+
+        // for(int side=0; side<4; side++)
+        // {
+        //     int current_position;
+        //     do
+        //     {
+        //         long sum;
+        //         sum = sum_nearby_elements(position);
+        //         if(sum > input)
+        //         {
+        //             return sum;
+        //         }
+        //
+        //         std::cout << "x: "
+        //                   << std::get<0>(position)
+        //                   << " y: "
+        //                   << std::get<1>(position)
+        //                   << " sum: "
+        //                   << sum
+        //                   << std::endl;
+
+        //         if(on_x)
+        //         {
+        //           std::get<0>(position) += std::get<1>(value);
+        //           current_position = std::get<0>(position);
+        //         } else
+        //         {
+        //           std::get<1>(position) += std::get<1>(value);
+        //           current_position = std::get<1>(position);
+        //         }
+        //     } while(std::abs(current_position) <= corner);
+        //     std::cout << "Finished loop" << std::endl;
+
+        //     value = {std::get<1>(value)*-1, std::get<0>(value)};
+        //     on_x = !on_x;
+        // }
+
+        // std::cout << "Increasing x" << std::endl;
+        std::get<0>(position)++;
+        corner++;
     }
 }
