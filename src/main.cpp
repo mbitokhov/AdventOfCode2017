@@ -1,4 +1,4 @@
-#define TESTING
+// #define TESTING
 
 #include "includes/helpers.hpp"
 #include "includes/adventofcode.hpp"
@@ -13,16 +13,16 @@
 
   int main(int argc, char *argv[])
   {
-      std::vector<std::vector<int>> input;
+      std::vector<std::vector<std::string>> input;
       if(argc == 1) {
-          input = vectorize<int>(cin);
+          input = vectorize<std::string>(cin);
       } else {
           std::stringstream args;
           for(int i=1; i<argc; i++)
           {
               args << argv[i];
           }
-          input = vectorize<int>(args);
+          input = vectorize<std::string>(args);
       }
       // print_multi_vector(input);
 
@@ -32,8 +32,11 @@
       // cout << "Day 2 Part 1: " << day2p1(input) << endl;
       // cout << "Day 2 Part 2: " << day2p2(input) << endl;
 
-      //cout << "Day 3 Part 1: " << day3p1(input[0][0]) << endl;
-      cout << "Day 3 Part 2: " << day3p2(input[0][0]) << endl;
+      // cout << "Day 3 Part 1: " << day3p1(input[0][0]) << endl;
+      // cout << "Day 3 Part 2: " << day3p2(input[0][0]) << endl;
+
+      cout << "Day 4 Part 1: " << day4p1(input) << endl;
+      cout << "Day 4 Part 2: " << day4p2(input) << endl;
 
       return 0;
   }
