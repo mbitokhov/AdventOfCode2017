@@ -13,16 +13,22 @@
 
   int main(int argc, char *argv[])
   {
-      std::vector<std::vector<std::string>> input;
+      //TODO: make some flags like --test, --benchmark, --dayn, --dayall
+      std::vector<std::string> args;
+
+      // std::vector<std::vector<std::string>> input;
+      std::vector<int> input;
+
       if(argc == 1) {
-          input = vectorize<std::string>(cin);
+          input = vectorize<int>(cin);
       } else {
-          std::stringstream args;
+          std::stringstream arguments;
           for(int i=1; i<argc; i++)
           {
-              args << argv[i];
+              arguments << argv[i];
           }
-          input = vectorize<std::string>(args);
+
+          input = vectorize<int>(arguments);
       }
       // print_multi_vector(input);
 
