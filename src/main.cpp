@@ -41,8 +41,11 @@
       // cout << "Day 3 Part 1: " << day3p1(input[0][0]) << endl;
       // cout << "Day 3 Part 2: " << day3p2(input[0][0]) << endl;
 
-      cout << "Day 4 Part 1: " << day4p1(input) << endl;
-      cout << "Day 4 Part 2: " << day4p2(input) << endl;
+      // cout << "Day 4 Part 1: " << day4p1(input) << endl;
+      // cout << "Day 4 Part 2: " << day4p2(input) << endl;
+
+      cout << "Day 5 Part 1: " << day5p1(input) << endl;
+      cout << "Day 5 Part 2: " << day5p2(input) << endl;
 
       return 0;
   }
