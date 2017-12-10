@@ -8,27 +8,36 @@
 uint64_t integral_hash(uint64_t);
 
 template <typename dtype>
-std::vector<std::vector<dtype>> vectorize(std::istream &input)
+std::vector<dtype> vectorize(std::istream &input)
 {
-    std::vector<std::vector<dtype>> return_value;
-    std::vector<dtype> line_values;
-    std::string line;
+    std::vector<dtype> values;
     dtype single_value;
 
-    std::stringstream line_stream;
+    while(input >> single_value)
+    {
+        values.push_back(single_value);
+    }
+    if(values.size() != 0)
+    {
+        return values;
+    }
+    return std::vector<dtype>();
+}
+
+template <typename dtype>
+std::vector<std::vector<dtype>> multi_vectorize(std::istream &input)
+{
+    std::vector<std::vector<dtype>> return_value;
+    std::string line;
+
     while(std::getline(input,line))
     {
-        line_stream << line;
-        while(line_stream >> single_value)
+        std::istringstream ss(line);
+        auto vec = vectorize<dtype>(ss);
+        if(vec.size() != 0)
         {
-            line_values.push_back(single_value);
+            return_value.push_back( vectorize<dtype>(ss) );
         }
-        if(line_values.size() != 0)
-        {
-            return_value.push_back(line_values);
-        }
-        line_values.clear();
-        line_stream.clear();
     }
     return return_value;
 }
