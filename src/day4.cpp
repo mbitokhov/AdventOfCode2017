@@ -9,7 +9,7 @@
 long day4p1(const std::vector<std::vector<std::string>>& input)
 {
     long sum{0};
-    std::unordered_map<std::string, short> memory;
+    std::unordered_map<std::string, bool> memory;
 
     for(const auto& vec:input)
     {
@@ -34,7 +34,7 @@ long day4p1(const std::vector<std::vector<std::string>>& input)
 long day4p2(const std::vector<std::vector<std::string>>&input)
 {
     long sum{0};
-    std::unordered_map<std::string, short> memory;
+    std::unordered_map<std::string, bool> memory;
 
     for(const auto& vec:input)
     {
