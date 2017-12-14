@@ -13,8 +13,8 @@
 
   int main(int argc, char *argv[])
   {
-      //TODO: make some flags like --test, --benchmark, --dayn, --dayall
-      std::vector<std::string> args;
+      // //TODO: make some flags like --test, --benchmark, --dayn, --dayall
+      // std::vector<std::string> args;
 
       // std::vector<std::vector<std::string>> input;
       std::vector<int> input;
@@ -44,8 +44,11 @@
       // cout << "Day 4 Part 1: " << day4p1(input) << endl;
       // cout << "Day 4 Part 2: " << day4p2(input) << endl;
 
-      cout << "Day 5 Part 1: " << day5p1(input) << endl;
-      cout << "Day 5 Part 2: " << day5p2(input) << endl;
+      // cout << "Day 5 Part 1: " << day5p1(input) << endl;
+      // cout << "Day 5 Part 2: " << day5p2(input) << endl;
+
+      cout << "Day 6 Part 1: " << day6p1(input) << endl;
+      cout << "Day 6 Part 2: " << day6p2(input) << endl;
 
       return 0;
   }
