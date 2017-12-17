@@ -17,7 +17,8 @@ unsigned long day5p1(std::vector<int>);
 unsigned long day5p2(std::vector<int>);
 long day6p1(std::vector<int>);
 long day6p2(std::vector<int>);
-
+std::string day7p1(std::vector<std::vector<std::string>>);
+long        day7p2(std::vector<std::vector<std::string>>);
 
 constexpr long day1p1(const char input[], const size_t &index)
 {
