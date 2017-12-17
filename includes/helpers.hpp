@@ -17,11 +17,7 @@ std::vector<dtype> vectorize(std::istream &input)
     {
         values.push_back(single_value);
     }
-    if(values.size() != 0)
-    {
-        return values;
-    }
-    return std::vector<dtype>();
+    return values;
 }
 
 template <typename dtype>
@@ -36,7 +32,7 @@ std::vector<std::vector<dtype>> multi_vectorize(std::istream &input)
         auto vec = vectorize<dtype>(ss);
         if(vec.size() != 0)
         {
-            return_value.push_back( vectorize<dtype>(ss) );
+            return_value.push_back( vec );
         }
     }
     return return_value;
