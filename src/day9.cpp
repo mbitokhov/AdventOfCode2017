@@ -31,27 +31,6 @@ size_t inline day9_find_unescaped(const std::string& input,
     }
     return std::string::npos;
 }
-size_t inline day9_find_matching(const std::string& input,
-                                const size_t start=0,
-                                const char increase='{',
-                                const char decrease='}')
-{
-    size_t depth=0;
-    size_t index=start;
-    do {
-        if(input[index] == increase)
-        {
-            depth++;
-        }
-        if(input[index] == decrease)
-        {
-            depth++;
-        }
-        index++;
-    } while(index < input.size() && depth != 0);
-
-    return index < input.size() ? index : std::string::npos;
-}
 
 long day9p1(std::string input)
 {
