@@ -23,6 +23,10 @@ long day8p1(std::vector<std::vector<std::string>>);
 long day8p2(std::vector<std::vector<std::string>>);
 long day9p1(std::string);
 long day9p2(const std::string&);
+long day10p1(const std::vector<int> &input);
+std::string day10p2(std::string input);
+long day11p1(const std::vector<std::string> &input);
+long day11p2(const std::vector<std::string> &input);
 
 constexpr long day1p1(const char input[], const size_t &index)
 {
