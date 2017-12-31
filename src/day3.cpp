@@ -42,14 +42,11 @@ long day3p2(const long& input)
     typedef std::tuple<int, int> Coordinate;
 
     auto tuple_hash = [](Coordinate value){
-        auto hashed = integral_hash(std::get<0>(value));
-        hashed = integral_hash(hashed ^ std::get<1>(value));
-
-        return hashed;
+        return combine_hash(std::get<0>(value), std::get<1>(value));
     };
 
-    std::unordered_map<Coordinate, long, decltype(tuple_hash)> grid(128,tuple_hash);
-    grid[{0,0}] = 1;
+    std::unordered_map<Coordinate, long, decltype(tuple_hash) > grid(1024, tuple_hash);
+    grid[std::make_tuple(0,0)] = 1;
 
     auto sum_nearby_elements = [&grid](Coordinate position)
     {
@@ -59,7 +56,6 @@ long day3p2(const long& input)
                       << "x: " << std::get<0>(position)
                       << "y: " << std::get<1>(position)
                       << std::endl;
-
         }
 
         int x = std::get<0> (position);
@@ -69,7 +65,7 @@ long day3p2(const long& input)
         {
             for(int j=-1; j<=1; j++)
             {
-                long found = grid[{x+i, y+j}];
+                long found = grid[std::make_tuple(x+i, y+j)];
                 // std::cout << "element: "
                 //           << "i: " << i << " "
                 //           << "j: " << j << " "
