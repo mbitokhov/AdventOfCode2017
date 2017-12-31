@@ -7,53 +7,36 @@
 #include <type_traits>
 #include <limits.h>
 
-uint64_t integral_hash(uint64_t);
-
-namespace std {
-
-    template <typename dtype>
-    struct hash<std::vector<dtype> >
-    {
-        template <typename T = dtype,
-                  typename = std::enable_if_t<std::is_arithmetic<T>::value> >
-
-        size_t operator()(const std::vector<T> &input) const
-        {
-            // Use different constants for different values sizeof(size_t)
-            const auto FNV_prime = [](){
-                constexpr int type = sizeof(size_t) * CHAR_BIT;
-                static_assert(type <= 64, "FNV > 64 bits is not implemented");
-
-                if(type <= 32)
-                {
-                    return (size_t) 16777619ul;
-                } else {
-                    return (size_t) 1099511628211ul;
-                }
-            }();
-            const auto FNV_offset = [](){
-                constexpr int type = sizeof(size_t) * CHAR_BIT;
-                static_assert(type <= 64, "FNV > 64 bits is not implemented");
-
-                if(type <= 32)
-                {
-                    return (size_t) 2166136261ul;
-                } else {
-                    return (size_t) 14695981039346656037ul;
-                }
-            }();
-
-            // Perform hash
-            size_t hashed = FNV_offset;
-            for(const auto &n:input)
-            {
-                hashed ^= n;
-                hashed *= FNV_prime;
-            }
-            return hashed;
-        }
-    };
+constexpr uint64_t integral_hash(uint64_t x)
+{
+    return x * 0x9e3779b97f4a7c15;
 }
+
+template <typename dtype, typename = void>
+struct vector_hash;
+
+template <typename dtype>
+struct vector_hash<std::vector<dtype>, std::enable_if_t<std::is_arithmetic<dtype>::value > >
+{
+    size_t operator()(const std::vector<dtype> &input) const
+    {
+        // Use different constants for different values sizeof(size_t)
+        constexpr auto size_of_size_t = sizeof(size_t) * CHAR_BIT;
+        static_assert(size_of_size_t <=64, "FNV > 64 bits is not implemented");
+
+        constexpr size_t FNV_prime = size_of_size_t < 64 ? 16777619ul : 1099511628211ul;
+        constexpr size_t FNV_offset = size_of_size_t < 64 ? 2166136261ul : 14695981039346656037ul;
+
+        // Perform hash
+        size_t hashed = FNV_offset;
+        for(const auto &n:input)
+        {
+            hashed ^= n;
+            hashed *= FNV_prime;
+        }
+        return hashed;
+    }
+};
 
 template <typename dtype>
 std::vector<dtype> vectorize(std::istream &input)
