@@ -105,3 +105,17 @@ void print_multi_vector(std::vector<std::vector<dtype>> input)
         std::cout << std::endl;
     }
 }
+
+template<typename T>
+constexpr T max_of(T a)
+{
+    return a;
+}
+
+template<typename T, typename... Args>
+constexpr T max_of(T first_value, T second_value, Args... rest)
+{
+    return (first_value < second_value)   ?
+            max_of(second_value, rest...) :
+            max_of(first_value, rest...)  ;
+}
