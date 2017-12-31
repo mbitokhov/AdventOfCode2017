@@ -12,6 +12,28 @@ constexpr uint64_t integral_hash(uint64_t x)
     return x * 0x9e3779b97f4a7c15;
 }
 
+// Combine already hashed values using small snippets of the Murmur Hash
+// I wish I was using C++17 to actually implement it fully using constexpr
+// So far the logic is too complicated for me to bother
+constexpr size_t combine_hash(size_t state)
+{
+    return (state ^ (state >> 16)) * 0x85ebca6b;
+}
+
+template <typename... Args>
+constexpr size_t combine_hash(size_t state, size_t hashed, Args... rest)
+{
+    return combine_hash(
+        state ^ (
+         (
+          ((hashed * 0xcc9e2d51) << 15) |
+          ((hashed * 0xcc9e2d51) >> 17)
+         ) * 0x1b873593
+        ),
+        rest...);
+}
+
+// Vector hash using FNV
 template <typename dtype, typename = void>
 struct vector_hash;
 
