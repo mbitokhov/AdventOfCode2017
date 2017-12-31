@@ -7,9 +7,11 @@
 #include <type_traits>
 #include <limits.h>
 
-constexpr uint64_t integral_hash(uint64_t x)
+constexpr size_t integral_hash(size_t x)
 {
-    return x * 0x9e3779b97f4a7c15;
+    return (sizeof(size_t) * CHAR_BIT <= 32) ?
+       x * 2654435761:
+       x * 0x9e3779b97f4a7c15 ;
 }
 
 // Combine already hashed values using small snippets of the Murmur Hash
