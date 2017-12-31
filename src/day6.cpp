@@ -21,8 +21,9 @@ void inline perform(std::vector<int> &input)
 
 long day6p1(std::vector<int> input)
 {
+    using hash_functor = vector_hash<std::vector<int> >;
     long counter=0;
-    std::unordered_map<std::vector<int>, bool> memory;
+    std::unordered_map<std::vector<int>, bool, hash_functor> memory;
     while(memory[input] == 0)
     {
         memory[input] = 1;
@@ -33,8 +34,9 @@ long day6p1(std::vector<int> input)
 }
 long day6p2(std::vector<int> input)
 {
+    using hash_functor = vector_hash<std::vector<int> >;
     long counter=0;
-    std::unordered_map<std::vector<int>, std::pair<bool,long> > memory;
+    std::unordered_map<std::vector<int>, std::pair<bool,long>, hash_functor > memory;
     while(memory[input].first == 0)
     {
         memory[input] = {1, counter};
